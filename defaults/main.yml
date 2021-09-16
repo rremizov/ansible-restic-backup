@@ -1,32 +1,33 @@
-#restic_backup:
-#  - directory: /path/to/backup
-#    repo: sftp:user@host:/srv/restic-repo
-#    # Provide either password_command or password_file! See restic docs for the details.
-#    password_command: echo password
-#    password_file: /run/secrets/password
-#    skip_repo_initialization: false # Default: false
-#    exclude: # Optional.
-#      - /var/backups
-#      - /boot
-#      - /dev
-#      - /home
-#      - /proc
-#      - /run
-#      - /tmp
-#      - /sys
-#    cron_month: "*"
-#    cron_weekday: "*"
-#    cron_day: "*"
-#    cron_hour: "0"
-#    cron_minute: "0"
-#    suppress_mail_on_success: true # Use chronic to suppress unwanted mail from cron. Default: yes.
-#    retention_within: 1d # Keep all archives within this interval.
-#    retention_hourly: 24 # Number of hourly archives to keep.
-#    retention_daily: 30 # Number of daily archives to keep.
-#    retention_weekly: 12 # Number of weekly archives to keep.
-#    retention_monthly: 12 # Number of monthly archives to keep.
-#    retention_yearly: 3 # Number of yearly archives to keep.
-#    pre_backup_hook: # Optional. Bash snippet to execute before each backup.
-#    post_backup_hook: # Optional. Bash snippet to execute after each backup.
+---
+# restic_backup:
+#   - directory: /path/to/backup
+#     repo: sftp:user@host:/srv/restic-repo
+#     # Provide either password_command or password_file! See restic docs for the details.
+#     password_command: echo password
+#     password_file: /run/secrets/password
+#     skip_repo_initialization: false # Default: false
+#     exclude: # Optional.
+#       - /var/backups
+#       - /boot
+#       - /dev
+#       - /home
+#       - /proc
+#       - /run
+#       - /tmp
+#       - /sys
+#     cron_month: "*"
+#     cron_weekday: "*"
+#     cron_day: "*"
+#     cron_hour: "0"
+#     cron_minute: "0"
+#     suppress_mail_on_success: true # Use chronic to suppress unwanted mail from cron. Default: yes
+#     retention_within: 1d # Keep all archives within this interval.
+#     retention_hourly: 24 # Number of hourly archives to keep.
+#     retention_daily: 30 # Number of daily archives to keep.
+#     retention_weekly: 12 # Number of weekly archives to keep.
+#     retention_monthly: 12 # Number of monthly archives to keep.
+#     retention_yearly: 3 # Number of yearly archives to keep.
+#     pre_backup_hook: # Optional. Bash snippet to execute before each backup.
+#     post_backup_hook: # Optional. Bash snippet to execute after each backup.
 #
 restic_backup: []

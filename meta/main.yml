@@ -1,5 +1,6 @@
+---
 galaxy_info:
-  role_name: restic_Backup
+  role_name: restic_backup
   author: Roman Remizov
   description: Configure Restic backup repository and create backups on schedule.
   license: MIT
