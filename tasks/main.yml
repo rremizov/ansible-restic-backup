@@ -1,0 +1,41 @@
+---
+- name: Install packages
+  apt:
+    name: "{{ packages }}"
+    #update_cache: true
+  vars:
+    packages:
+      - restic
+      - moreutils # chronic
+
+- name: Create ~/bin directory
+  file:
+    path: "~/bin"
+    state: directory
+
+- name: Install backup scripts
+  template:
+    src: backup.sh.j2
+    dest: ~/bin/backup_{{ (item.directory + item.repo)|hash('md5') }}.sh
+    owner: root
+    group: root
+    mode: "700"
+  with_items: "{{ restic_backup }}"
+  loop_control:
+    label: "{{ item.repo }}"
+
+- name: Setup cronjobs
+  cron:
+    name: Backup {{ item.directory }} to {{ item.repo }}
+    user: root
+    month: "{{ item.cron_month|default(omit) }}"
+    weekday: "{{ item.cron_weekday|default(omit) }}"
+    day: "{{ item.cron_day|default(omit) }}"
+    hour: "{{ item.cron_hour|default(omit) }}"
+    minute: "{{ item.cron_minute|default(omit) }}"
+    job: >
+      {% if item.suppress_mail_on_success|default(True) %}chronic{% endif %}
+      ~/bin/backup_{{ (item.directory + item.repo)|hash('md5') }}.sh
+  with_items: "{{ restic_backup }}"
+  loop_control:
+    label: "{{ item.repo }}"
