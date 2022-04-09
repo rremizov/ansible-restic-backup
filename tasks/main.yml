@@ -16,14 +16,34 @@
     group: root
     mode: "700"
 
+- name: Remove old backup scripts
+  file:
+    src: backup.sh.j2
+    path: ~/bin/backup_{{ (item.directory + item.repo)|hash('md5') }}.sh
+    state: absent
+  when: item.state == 'absent'
+  with_items: "{{ restic_backup }}"
+  loop_control:
+    label: "{{ item.repo }}"
+
+- name: Remove backup scripts
+  file:
+    src: backup.sh.j2
+    path: ~/bin/backup_{{ ('restic_' + item.directory + item.repo)|hash('md5') }}.sh
+    state: absent
+  when: item.state == 'absent'
+  with_items: "{{ restic_backup }}"
+  loop_control:
+    label: "{{ item.repo }}"
 
 - name: Install backup scripts
   template:
     src: backup.sh.j2
-    dest: ~/bin/backup_{{ (item.directory + item.repo)|hash('md5') }}.sh
+    dest: ~/bin/backup_{{ ('restic_' + item.directory + item.repo)|hash('md5') }}.sh
     owner: root
     group: root
     mode: "700"
+  when: item.state == 'present'
   with_items: "{{ restic_backup }}"
   loop_control:
     label: "{{ item.repo }}"
@@ -39,7 +59,8 @@
     minute: "{{ item.cron_minute|default(omit) }}"
     job: >
       {% if item.suppress_mail_on_success|default(True) %}chronic{% endif %}
-      ~/bin/backup_{{ (item.directory + item.repo)|hash('md5') }}.sh
+      ~/bin/backup_{{ ('restic_' + item.directory + item.repo)|hash('md5') }}.sh
+    state: "{{ item.state }}"
   with_items: "{{ restic_backup }}"
   loop_control:
     label: "{{ item.repo }}"
