@@ -63,6 +63,15 @@ restic forget \
     {% endif %}
     --repo {{ item.repo }}
 
+restic prune \
+    -v \
+    {% if item.password_command is defined %}
+    --password-command {{ item.password_command }} \
+    {% elif item.password_file is defined %}
+    --password-file {{ item.password_file }} \
+    {% endif %}
+    --repo {{ item.repo }}
+
 restic cache \
     -v \
     {% if item.password_command is defined %}
