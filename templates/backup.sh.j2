@@ -14,6 +14,15 @@ restic init \
     {% endif %}
     --repo {{ item.repo }} || true # Make init idempotent.
 
+restic unlock \
+    -v \
+    {% if item.password_command is defined %}
+    --password-command {{ item.password_command }} \
+    {% elif item.password_file is defined %}
+    --password-file {{ item.password_file }} \
+    {% endif %}
+    --repo {{ item.repo }}
+
 restic backup \
     -v --one-file-system \
     {% for pattern in item.exclude|default([]) %}
@@ -26,15 +35,6 @@ restic backup \
     --password-file {{ item.password_file }} \
     {% endif %}
     {{ item.directory }}
-
-restic unlock \
-    -v \
-    {% if item.password_command is defined %}
-    --password-command {{ item.password_command }} \
-    {% elif item.password_file is defined %}
-    --password-file {{ item.password_file }} \
-    {% endif %}
-    --repo {{ item.repo }}
 
 restic forget \
     -v \
