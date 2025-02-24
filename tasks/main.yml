@@ -18,7 +18,6 @@
 
 - name: Remove old backup scripts
   file:
-    src: backup.sh.j2
     path: ~/bin/backup_{{ (item.directory + item.repo)|hash('md5') }}.sh
     state: absent
   when: item.state == 'absent'
@@ -28,7 +27,6 @@
 
 - name: Remove backup scripts
   file:
-    src: backup.sh.j2
     path: ~/bin/backup_{{ ('restic_' + item.directory + item.repo)|hash('md5') }}.sh
     state: absent
   when: item.state == 'absent'
