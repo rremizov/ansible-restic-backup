@@ -60,5 +60,5 @@ DO NOT:
 - End subject with period
 - Exceed 72 chars in subject
 - Add body for trivial changes
-- Add any references to Claude or Anthropic
+- Add any references to Claude or Antropic
 
