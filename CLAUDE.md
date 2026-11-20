@@ -13,3 +13,9 @@
 YOU HAVE TO ABSOLUTELY TOTALLY ALWAYS use the following subagents AFTER YOU HAVE FINISHED YOUR WORK:
 
 - @documentation-maintainer
+
+YOU HAVE TO ABSOLUTELY TOTALLY ALWAYS use the following tools AFTER YOU HAVE FINISHED YOUR WORK:
+
+- `yamllint`
+- `ansible-lint`
+

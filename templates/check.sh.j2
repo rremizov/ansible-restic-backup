@@ -1,0 +1,17 @@
+#jinja2: lstrip_blocks: True
+#!/bin/bash
+
+set -e
+
+{{ item.pre_check_hook|default('') }}
+
+restic check \
+    -v \
+    {% if item.password_command is defined %}
+    --password-command {{ item.password_command }} \
+    {% elif item.password_file is defined %}
+    --password-file {{ item.password_file }} \
+    {% endif %}
+    --repo {{ item.repo }}
+
+{{ item.post_check_hook|default('') }}

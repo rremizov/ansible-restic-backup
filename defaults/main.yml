@@ -29,5 +29,14 @@
 #     retention_yearly: 3 # Number of yearly archives to keep.
 #     pre_backup_hook: # Optional. Bash snippet to execute before each backup.
 #     post_backup_hook: # Optional. Bash snippet to execute after each backup.
+#     # Optional scheduled `restic check` job (plain check, no data read).
+#     # Deployed only when check_cron_hour is defined.
+#     check_cron_month: "*"
+#     check_cron_weekday: "0"
+#     check_cron_day: "*"
+#     check_cron_hour: "4"
+#     check_cron_minute: "11"
+#     pre_check_hook: # Optional. Bash snippet to execute before each check.
+#     post_check_hook: # Optional. Bash snippet to execute after each check.
 #
 restic_backup: []
