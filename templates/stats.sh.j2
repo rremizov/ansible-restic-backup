@@ -1,0 +1,14 @@
+#jinja2: lstrip_blocks: True
+#!/bin/bash
+
+{{ item.pre_backup_hook|default('') }}
+
+export RESTIC_REPOSITORY='{{ item.repo }}'
+{% if item.password_command is defined %}
+export RESTIC_PASSWORD_COMMAND='{{ item.password_command }}'
+{% elif item.password_file is defined %}
+# Double quotes keep $(whoami)-style substitutions expandable at runtime.
+export RESTIC_PASSWORD_FILE="{{ item.password_file }}"
+{% endif %}
+
+exec ~/bin/restic-repo-stats.py

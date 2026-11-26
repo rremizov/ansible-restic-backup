@@ -7,11 +7,13 @@ Features
 --------
 
 - Uses [restic](https://github.com/restic/restic) to create versioned, deduplicated and encrypted backups.
+- Deploys an on-demand stats script per job (`~/bin/stats_*.sh`): snapshot list, latest-snapshot restore size, repository deduplicated size, and du-style per-directory size and file-count breakdowns via the bundled `restic-repo-stats.py` tool.
 
 Caveats
 -------
 
 - Hooks are rendered verbatim into the on-disk scripts (`~/bin/*.sh`, 0700 root). Never embed secret material in a hook — deploy it as a file and point `password_file`/`password_command` at it.
+- Stats scripts are deployed for every `present` entry and render the pre-backup hook verbatim (see above).
 - Dropping `check_cron_hour` from a `present` entry removes the check script but leaves its cron line (no "was deployed" marker to key on) — `state: absent` removes both.
 
 Requirements

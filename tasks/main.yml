@@ -16,6 +16,15 @@
     group: root
     mode: "700"
 
+- name: Install repo stats tool
+  copy:
+    src: restic-repo-stats.py
+    dest: ~/bin/restic-repo-stats.py
+    owner: root
+    group: root
+    mode: "700"
+  when: restic_backup|default([])|length > 0
+
 - name: Remove old backup scripts
   file:
     path: ~/bin/backup_{{ (item.directory + item.repo)|hash('md5') }}.sh
@@ -98,6 +107,27 @@
       ~/bin/check_{{ ('restic_' + item.directory + item.repo)|hash('md5') }}.sh
     state: "{{ item.state }}"
   when: item.check_cron_hour is defined
+  with_items: "{{ restic_backup }}"
+  loop_control:
+    label: "{{ item.repo }}"
+
+- name: Remove stats scripts
+  file:
+    path: ~/bin/stats_{{ ('restic_' + item.directory + item.repo)|hash('md5') }}.sh
+    state: absent
+  when: item.state == 'absent'
+  with_items: "{{ restic_backup }}"
+  loop_control:
+    label: "{{ item.repo }}"
+
+- name: Install stats scripts
+  template:
+    src: stats.sh.j2
+    dest: ~/bin/stats_{{ ('restic_' + item.directory + item.repo)|hash('md5') }}.sh
+    owner: root
+    group: root
+    mode: "700"
+  when: item.state == 'present'
   with_items: "{{ restic_backup }}"
   loop_control:
     label: "{{ item.repo }}"
